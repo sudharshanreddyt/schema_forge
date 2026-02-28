@@ -1,48 +1,9 @@
-# SchemaForge
+# Trust Worthy AI Legal Database API Documentation
 
-## Clone the repository
-```bash
-git clone https://github.com/sudharshanreddyt/schema_forge.git
-cd schema_forge
-```
-
-## Create a virtual environment
-```bash
-python -m venv venv
-source venv/bin/activate
-```
-
-## Install dependencies
-```bash
-pip install -r requirements.txt
-```
-
-## Create .env file
-Replace the values in the .env file with your own values
-# Database Configuration
-PG_DB=<db_name>
-PG_USER=<db_user>
-PG_PASSWORD=<db_password>
-PG_HOST=<db_host>
-PG_PORT=<db_port>
-
-# Project Settings
-PROJECT_NAME=<project_name>
-
-## How to Run
-Run the following command from the **root directory** of the project:
-```bash
-python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
-```
-
-It will start the server at `http://localhost:8000` and the API documentation at `http://localhost:8000/docs`
-
-
-## API Reference
-This document provides a comprehensive overview of the available API endpoints for the SchemaForge Legal Database, including detailed example inputs for **every single** route.
+This document provides a comprehensive overview of the available API endpoints for the Trust Worthy AI Legal Database, including detailed example inputs for **every single** route.
 
 ## Base URL
-The API is served at: `http://localhost:8000/docs`
+The API is served at: `http://localhost:8000/api/v1`
 
 ---
 
@@ -52,7 +13,7 @@ Manage legal jurisdictions (States, Federal, International).
 ### List Jurisdictions
 - **Endpoint**: `GET /jurisdictions/`
 - **Description**: Retrieve a list of jurisdictions.
-- **Example Usage**: `GET /jurisdictions/?skip=0&limit=5`
+- **Example Usage**: `GET /jurisdictions/?skip=0&limit=10`
 
 ### Create Jurisdiction
 - **Endpoint**: `POST /jurisdictions/`
