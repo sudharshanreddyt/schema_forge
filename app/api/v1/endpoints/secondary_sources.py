@@ -1,6 +1,7 @@
 from typing import Any, List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 
 from app.crud import crud
 from app.schemas import schemas
@@ -24,7 +25,14 @@ def create_secondary_source(
     db: Session = Depends(get_db),
     source_in: schemas.SecondarySourceCreate,
 ) -> Any:
-    return crud.secondary_source.create(db, obj_in=source_in)
+    try:
+        return crud.secondary_source.create(db, obj_in=source_in)
+    except IntegrityError as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=400,
+            detail=f"Integrity Error: {str(e.orig) if hasattr(e, 'orig') else str(e)}"
+        )
 
 
 @router.get("/{id}", response_model=schemas.SecondarySource)
@@ -49,16 +57,22 @@ def update_secondary_source(
     source = crud.secondary_source.get(db, id=id)
     if not source:
         raise HTTPException(status_code=404, detail="Secondary source not found")
-    return crud.secondary_source.update(db, db_obj=source, obj_in=source_in)
+    try:
+        return crud.secondary_source.update(db, db_obj=source, obj_in=source_in)
+    except IntegrityError as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=400,
+            detail=f"Integrity Error: {str(e.orig) if hasattr(e, 'orig') else str(e)}"
+        )
 
 
-@router.delete("/{id}", response_model=schemas.SecondarySource)
-def delete_secondary_source(
-    *,
-    db: Session = Depends(get_db),
-    id: int,
-) -> Any:
-    source = crud.secondary_source.get(db, id=id)
-    if not source:
-        raise HTTPException(status_code=404, detail="Secondary source not found")
-    return crud.secondary_source.remove(db, id=id)
+    try:
+        crud.secondary_source.remove(db, id=id)
+    except IntegrityError as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=400,
+            detail=f"Integrity Error: {str(e.orig) if hasattr(e, 'orig') else str(e)}"
+        )
+    return {"message": "Secondary source deleted successfully", "id": id}

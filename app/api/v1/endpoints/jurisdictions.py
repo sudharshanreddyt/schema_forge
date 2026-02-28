@@ -1,6 +1,7 @@
 from typing import Any, List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 
 from app.crud import crud
 from app.schemas import schemas
@@ -24,7 +25,14 @@ def create_jurisdiction(
     db: Session = Depends(get_db),
     jurisdiction_in: schemas.JurisdictionCreate,
 ) -> Any:
-    return crud.jurisdiction.create(db, obj_in=jurisdiction_in)
+    try:
+        return crud.jurisdiction.create(db, obj_in=jurisdiction_in)
+    except IntegrityError as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=400,
+            detail=f"Integrity Error: {str(e.orig) if hasattr(e, 'orig') else str(e)}"
+        )
 
 
 @router.get("/{id}", response_model=schemas.Jurisdiction)
