@@ -76,6 +76,7 @@ The core entity representing legal cases.
 
 ### List Cases
 - **Endpoint**: `GET /cases/`
+- **Description**: Retrieve a list of cases. Skip is the number of records to skip and limit is the number of records to retrieve.
 - **Example Usage**: `GET /cases/?skip=0&limit=10`
 
 ### Create Case
@@ -98,12 +99,12 @@ The core entity representing legal cases.
   "most_recent_activity_date": "2024-02-10",
   "date_added": "2024-01-20",
   "last_update": "2024-02-11",
-  "jurisdiction_id": 1,
-  "area_ids": [1],
-  "issue_ids": [1, 2],
-  "cause_ids": [1],
-  "algorithm_ids": [1],
-  "organization_ids": [5]
+  "jurisdiction_id": 129,
+  "area_ids": [129],
+  "issue_ids": [129, 129],
+  "cause_ids": [129],
+  "algorithm_ids": [129],
+  "organization_ids": [129]
 }
 ```
 

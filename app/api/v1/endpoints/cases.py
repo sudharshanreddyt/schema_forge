@@ -1,6 +1,7 @@
 from typing import Any, List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 
 from app.crud import crud
 from app.schemas import schemas
@@ -37,7 +38,14 @@ def create_case(
             status_code=400,
             detail="The case with this slug already exists in the system.",
         )
-    case = crud.case.create(db, obj_in=case_in)
+    try:
+        case = crud.case.create(db, obj_in=case_in)
+    except IntegrityError as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=400,
+            detail=f"Integrity Error: {str(e.orig) if hasattr(e, 'orig') else str(e)}"
+        )
     return case
 
 
@@ -57,7 +65,14 @@ def update_case(
             status_code=404,
             detail="Case not found",
         )
-    case = crud.case.update(db, db_obj=case, obj_in=case_in)
+    try:
+        case = crud.case.update(db, db_obj=case, obj_in=case_in)
+    except IntegrityError as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=400,
+            detail=f"Integrity Error: {str(e.orig) if hasattr(e, 'orig') else str(e)}"
+        )
     return case
 
 
@@ -79,7 +94,7 @@ def read_case(
     return case
 
 
-@router.delete("/{id}", response_model=schemas.Case)
+@router.delete("/{id}")
 def delete_case(
     *,
     db: Session = Depends(get_db),
@@ -94,5 +109,12 @@ def delete_case(
             status_code=404,
             detail="Case not found",
         )
-    case = crud.case.remove(db, id=id)
-    return case
+    try:
+        crud.case.remove(db, id=id)
+    except IntegrityError as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=400,
+            detail=f"Integrity Error: {str(e.orig) if hasattr(e, 'orig') else str(e)}"
+        )
+    return {"message": "Case deleted successfully", "id": id}
