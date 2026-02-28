@@ -19,6 +19,11 @@ def load_cases():
 
     for _, row in df.iterrows():
 
+        slug = row.get("Case_snug")
+
+        if not slug:
+            continue
+
         court_name = row.get("Jurisdiction_Filed")
         jurisdiction_type = row.get("Jurisdiction_Type_Text")
         jurisdiction_name = row.get("Jurisdiction_Name")
