@@ -1,3 +1,29 @@
-/.venv
-/.env
-sql/test.sql
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# IDEs
+.vscode/
+.idea/
+.DS_Store
+
+# Temporary files
+/tmp/
