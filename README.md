@@ -289,5 +289,8 @@ Manage categorizations for legal analytics. These categories are linked to Cases
 
 ---
 
+## 🚀 Deployment
+- **Render Deployment**: See [render.yaml](render.yaml) and [deployment_guide.md](deployment_guide.md) for instructions.
+
 ## 🛠️ Developer Tools
 - **Swagger UI**: [http://localhost:8000/docs](http://localhost:8000/docs) (Best for interactive testing)
