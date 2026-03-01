@@ -5,7 +5,7 @@ python scripts/main.py
 
 or 
 
-**Test Link** - [link](schema-forge.onrender.com/docs#/)
+**Test Link** - (schema-forge.onrender.com/docs#/)
 
 ## Clone the repository
 ```bash
