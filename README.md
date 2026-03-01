@@ -77,7 +77,12 @@ The core entity representing legal cases.
 ### List Cases
 - **Endpoint**: `GET /cases/`
 - **Description**: Retrieve a list of cases. Skip is the number of records to skip and limit is the number of records to retrieve.
-- **Example Usage**: `GET /cases/?skip=0&limit=10`
+- **Example Usage**: `GET /cases/?skip=0&limit=3`
+
+### Search/Filter Cases
+- **Endpoint**: `GET /cases/search/`
+- **Description**: Filter cases by various fields (case_id, slug, caption, filing_date, etc.).
+- **Example Usage**: `GET /cases/search/?case_id=323&caption=Smith`
 
 ### Create Case
 - **Endpoint**: `POST /cases/`
@@ -139,6 +144,10 @@ Court dockets associated with cases.
 - **Endpoint**: `GET /dockets/`
 - **Example Usage**: `GET /dockets/`
 
+### Search Dockets
+- **Endpoint**: `GET /dockets/search/`
+- **Example Usage**: `GET /dockets/search/?case_id=1&court=Superior`
+
 ### Create Docket
 - **Endpoint**: `POST /dockets/`
 - **Example Input**:
@@ -177,6 +186,10 @@ Legal documents linked to dockets.
 ### List Documents
 - **Endpoint**: `GET /documents/`
 - **Example Usage**: `GET /documents/`
+
+### Search Documents
+- **Endpoint**: `GET /documents/search/`
+- **Example Usage**: `GET /documents/search/?document_type=Complaint`
 
 ### Create Document
 - **Endpoint**: `POST /documents/`
@@ -217,6 +230,10 @@ External sources and citations related to cases.
 ### List Secondary Sources
 - **Endpoint**: `GET /secondary-sources/`
 - **Example Usage**: `GET /secondary-sources/`
+
+### Search Secondary Sources
+- **Endpoint**: `GET /secondary-sources/search/`
+- **Example Usage**: `GET /secondary-sources/search/?title=Analysis`
 
 ### Create Secondary Source
 - **Endpoint**: `POST /secondary-sources/`
@@ -286,6 +303,7 @@ Manage categorizations for legal analytics. These categories are linked to Cases
   ```json
   { "name": "Tech Corp Inc." }
   ```
+- **GET `/taxonomies/organizations/search/`**: Search organizations by name.
 
 ---
 

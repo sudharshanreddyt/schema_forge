@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any, List, Optional
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
@@ -14,9 +14,31 @@ router = APIRouter()
 def read_dockets(
     db: Session = Depends(get_db),
     skip: int = 0,
-    limit: int = 100,
+    limit: int = 3,
 ) -> Any:
     return crud.docket.get_multi(db, skip=skip, limit=limit)
+
+
+@router.get("/search/", response_model=List[schemas.Docket])
+def search_dockets(
+    db: Session = Depends(get_db),
+    skip: int = 0,
+    limit: int = 3,
+    docket_id: Optional[int] = None,
+    case_id: Optional[int] = None,
+    court: Optional[str] = None,
+    docket_number: Optional[str] = None,
+) -> Any:
+    """
+    Search dockets with filters.
+    """
+    filters = {
+        "docket_id": docket_id,
+        "case_id": case_id,
+        "court": court,
+        "docket_number": docket_number,
+    }
+    return crud.docket.get_multi_filtered(db, skip=skip, limit=limit, **filters)
 
 
 @router.post("/", response_model=schemas.Docket)

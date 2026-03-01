@@ -1,4 +1,5 @@
-from typing import Any, List
+from datetime import date
+from typing import Any, List, Optional
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
@@ -14,13 +15,49 @@ router = APIRouter()
 def read_cases(
     db: Session = Depends(get_db),
     skip: int = 0,
-    limit: int = 100,
+    limit: int = 3,
 ) -> Any:
     """
     Retrieve cases.
     """
     cases = crud.case.get_multi(db, skip=skip, limit=limit)
     return cases
+
+
+@router.get("/search/", response_model=List[schemas.Case])
+def search_cases(
+    db: Session = Depends(get_db),
+    skip: int = 0,
+    limit: int = 3,
+    case_id: Optional[int] = None,
+    slug: Optional[str] = None,
+    record_number: Optional[int] = None,
+    caption: Optional[str] = None,
+    filing_date: Optional[date] = None,
+    status_disposition: Optional[str] = None,
+    published_opinion_flag: Optional[bool] = None,
+    class_action_status: Optional[str] = None,
+    researcher: Optional[str] = None,
+    jurisdiction_id: Optional[int] = None,
+    most_recent_activity_date: Optional[date] = None,
+) -> Any:
+    """
+    Search cases with filters.
+    """
+    filters = {
+        "case_id": case_id,
+        "slug": slug,
+        "record_number": record_number,
+        "caption": caption,
+        "filing_date": filing_date,
+        "status_disposition": status_disposition,
+        "published_opinion_flag": published_opinion_flag,
+        "class_action_status": class_action_status,
+        "researcher": researcher,
+        "jurisdiction_id": jurisdiction_id,
+        "most_recent_activity_date": most_recent_activity_date,
+    }
+    return crud.case.get_multi_filtered(db, skip=skip, limit=limit, **filters)
 
 
 @router.post("/", response_model=schemas.Case)
