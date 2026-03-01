@@ -1,9 +1,37 @@
+"""
+Case Data Migration Script.
+
+Extracts, transforms, and loads litigation case data from
+Excel into the normalized PostgreSQL schema.
+
+This module handles:
+- Jurisdiction insertion
+- Case insertion
+- Reference table population
+- Bridge table population
+- Referential integrity enforcement
+"""
+
 import pandas as pd
 from db import get_connection
 from utils import clean_df, parse_list
 
 
 def load_cases():
+    """
+    Load and normalize case records into the database.
+
+    Performs:
+    - Data cleaning
+    - Jurisdiction validation and insertion
+    - Case insertion with conflict handling
+    - Reference entity insertion
+    - Many-to-many bridge table population
+
+    Returns:
+        dict[int, int]: Mapping of legacy record_number
+        to newly created case_id.
+    """
 
     df = clean_df(
         pd.read_excel(

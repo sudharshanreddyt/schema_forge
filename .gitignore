@@ -27,3 +27,4 @@ env/
 
 # Temporary files
 /tmp/
+test.sql

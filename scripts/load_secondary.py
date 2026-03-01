@@ -1,8 +1,21 @@
+"""
+Secondary Source Migration Script.
+
+Loads external references such as news articles,
+blog posts, and legal commentary linked to cases.
+"""
+
 import pandas as pd
 from db import get_connection
 from utils import clean_df
 
 def load_secondary(record_map):
+    """
+    Insert secondary source references into the database.
+
+    Args:
+        record_map (dict): Mapping of record_number to case_id.
+    """
 
     df = clean_df(
         pd.read_excel(

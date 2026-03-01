@@ -1,8 +1,21 @@
+"""
+Docket Data Migration Script.
+
+Loads docket information and associates each docket
+with its corresponding case using foreign key relationships.
+"""
+
 import pandas as pd
 from db import get_connection
 from utils import clean_df
 
 def load_dockets(record_map):
+    """
+    Insert docket records linked to existing cases.
+
+    Args:
+        record_map (dict): Mapping of record_number to case_id.
+    """
 
     df = clean_df(
         pd.read_excel(

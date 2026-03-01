@@ -1,8 +1,25 @@
+"""
+Document Data Migration Script.
+
+Loads case-related documents and links them to
+their respective dockets to maintain hierarchical
+legal record structure.
+"""
+
 import pandas as pd
 from db import get_connection
 from utils import clean_df
 
 def load_documents(record_map):
+    """
+    Insert document records associated with dockets.
+
+    Documents are linked via the first available docket
+    for each case.
+
+    Args:
+        record_map (dict): Mapping of record_number to case_id.
+    """
 
     df = clean_df(
         pd.read_excel(
