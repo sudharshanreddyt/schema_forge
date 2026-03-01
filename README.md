@@ -3,6 +3,10 @@
 ⁠ bash
 python scripts/main.py
 
+or 
+
+**Test Link** - [link](schema-forge.onrender.com/docs#/)
+
 ## Clone the repository
 ```bash
 git clone https://github.com/sudharshanreddyt/schema_forge.git
