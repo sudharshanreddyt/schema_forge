@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any, List, Optional
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
@@ -14,6 +14,17 @@ router = APIRouter()
 @router.get("/areas/", response_model=List[schemas.AreaOfApplication], tags=["taxonomies"])
 def read_areas(db: Session = Depends(get_db), skip: int = 0, limit: int = 100) -> Any:
     return crud.area.get_multi(db, skip=skip, limit=limit)
+
+
+@router.get("/areas/search/", response_model=List[schemas.AreaOfApplication], tags=["taxonomies"])
+def search_areas(
+    db: Session = Depends(get_db),
+    skip: int = 0,
+    limit: int = 3,
+    area_id: Optional[int] = None,
+    name: Optional[str] = None,
+) -> Any:
+    return crud.area.get_multi_filtered(db, skip=skip, limit=limit, area_id=area_id, name=name)
 
 @router.post("/areas/", response_model=schemas.AreaOfApplication, tags=["taxonomies"])
 def create_area(*, db: Session = Depends(get_db), area_in: schemas.TaxonomyCreate) -> Any:
@@ -32,6 +43,17 @@ def create_area(*, db: Session = Depends(get_db), area_in: schemas.TaxonomyCreat
 def read_issues(db: Session = Depends(get_db), skip: int = 0, limit: int = 100) -> Any:
     return crud.issue.get_multi(db, skip=skip, limit=limit)
 
+
+@router.get("/issues/search/", response_model=List[schemas.Issue], tags=["taxonomies"])
+def search_issues(
+    db: Session = Depends(get_db),
+    skip: int = 0,
+    limit: int = 3,
+    issue_id: Optional[int] = None,
+    name: Optional[str] = None,
+) -> Any:
+    return crud.issue.get_multi_filtered(db, skip=skip, limit=limit, issue_id=issue_id, name=name)
+
 @router.post("/issues/", response_model=schemas.Issue, tags=["taxonomies"])
 def create_issue(*, db: Session = Depends(get_db), issue_in: schemas.TaxonomyCreate) -> Any:
     try:
@@ -48,6 +70,17 @@ def create_issue(*, db: Session = Depends(get_db), issue_in: schemas.TaxonomyCre
 @router.get("/causes/", response_model=List[schemas.CauseOfAction], tags=["taxonomies"])
 def read_causes(db: Session = Depends(get_db), skip: int = 0, limit: int = 100) -> Any:
     return crud.cause.get_multi(db, skip=skip, limit=limit)
+
+
+@router.get("/causes/search/", response_model=List[schemas.CauseOfAction], tags=["taxonomies"])
+def search_causes(
+    db: Session = Depends(get_db),
+    skip: int = 0,
+    limit: int = 3,
+    cause_id: Optional[int] = None,
+    name: Optional[str] = None,
+) -> Any:
+    return crud.cause.get_multi_filtered(db, skip=skip, limit=limit, cause_id=cause_id, name=name)
 
 @router.post("/causes/", response_model=schemas.CauseOfAction, tags=["taxonomies"])
 def create_cause(*, db: Session = Depends(get_db), cause_in: schemas.TaxonomyCreate) -> Any:
@@ -66,6 +99,17 @@ def create_cause(*, db: Session = Depends(get_db), cause_in: schemas.TaxonomyCre
 def read_algorithms(db: Session = Depends(get_db), skip: int = 0, limit: int = 100) -> Any:
     return crud.algorithm.get_multi(db, skip=skip, limit=limit)
 
+
+@router.get("/algorithms/search/", response_model=List[schemas.Algorithm], tags=["taxonomies"])
+def search_algorithms(
+    db: Session = Depends(get_db),
+    skip: int = 0,
+    limit: int = 3,
+    algorithm_id: Optional[int] = None,
+    name: Optional[str] = None,
+) -> Any:
+    return crud.algorithm.get_multi_filtered(db, skip=skip, limit=limit, algorithm_id=algorithm_id, name=name)
+
 @router.post("/algorithms/", response_model=schemas.Algorithm, tags=["taxonomies"])
 def create_algorithm(*, db: Session = Depends(get_db), algorithm_in: schemas.TaxonomyCreate) -> Any:
     try:
@@ -82,6 +126,17 @@ def create_algorithm(*, db: Session = Depends(get_db), algorithm_in: schemas.Tax
 @router.get("/organizations/", response_model=List[schemas.Organization], tags=["taxonomies"])
 def read_organizations(db: Session = Depends(get_db), skip: int = 0, limit: int = 100) -> Any:
     return crud.organization.get_multi(db, skip=skip, limit=limit)
+
+
+@router.get("/organizations/search/", response_model=List[schemas.Organization], tags=["taxonomies"])
+def search_organizations(
+    db: Session = Depends(get_db),
+    skip: int = 0,
+    limit: int = 3,
+    organization_id: Optional[int] = None,
+    name: Optional[str] = None,
+) -> Any:
+    return crud.organization.get_multi_filtered(db, skip=skip, limit=limit, organization_id=organization_id, name=name)
 
 @router.post("/organizations/", response_model=schemas.Organization, tags=["taxonomies"])
 def create_organization(*, db: Session = Depends(get_db), org_in: schemas.TaxonomyCreate) -> Any:

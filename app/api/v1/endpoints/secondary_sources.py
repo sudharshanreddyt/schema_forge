@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any, List, Optional
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
@@ -14,9 +14,29 @@ router = APIRouter()
 def read_secondary_sources(
     db: Session = Depends(get_db),
     skip: int = 0,
-    limit: int = 100,
+    limit: int = 3,
 ) -> Any:
     return crud.secondary_source.get_multi(db, skip=skip, limit=limit)
+
+
+@router.get("/search/", response_model=List[schemas.SecondarySource])
+def search_secondary_sources(
+    db: Session = Depends(get_db),
+    skip: int = 0,
+    limit: int = 3,
+    source_id: Optional[int] = None,
+    case_id: Optional[int] = None,
+    title: Optional[str] = None,
+) -> Any:
+    """
+    Search secondary sources with filters.
+    """
+    filters = {
+        "source_id": source_id,
+        "case_id": case_id,
+        "title": title,
+    }
+    return crud.secondary_source.get_multi_filtered(db, skip=skip, limit=limit, **filters)
 
 
 @router.post("/", response_model=schemas.SecondarySource)

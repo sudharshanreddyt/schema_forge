@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any, List, Optional
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
@@ -14,9 +14,31 @@ router = APIRouter()
 def read_jurisdictions(
     db: Session = Depends(get_db),
     skip: int = 0,
-    limit: int = 100,
+    limit: int = 3,
 ) -> Any:
     return crud.jurisdiction.get_multi(db, skip=skip, limit=limit)
+
+
+@router.get("/search/", response_model=List[schemas.Jurisdiction])
+def search_jurisdictions(
+    db: Session = Depends(get_db),
+    skip: int = 0,
+    limit: int = 3,
+    jurisdiction_id: Optional[int] = None,
+    court_name: Optional[str] = None,
+    jurisdiction_type: Optional[str] = None,
+    jurisdiction_name: Optional[str] = None,
+) -> Any:
+    """
+    Search jurisdictions with filters.
+    """
+    filters = {
+        "jurisdiction_id": jurisdiction_id,
+        "court_name": court_name,
+        "jurisdiction_type": jurisdiction_type,
+        "jurisdiction_name": jurisdiction_name,
+    }
+    return crud.jurisdiction.get_multi_filtered(db, skip=skip, limit=limit, **filters)
 
 
 @router.post("/", response_model=schemas.Jurisdiction)
