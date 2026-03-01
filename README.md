@@ -1,4 +1,7 @@
 # SchemaForge
+## Run the script to create the database
+⁠ bash
+python scripts/main.py
 
 ## Clone the repository
 ```bash
@@ -19,12 +22,13 @@ pip install -r requirements.txt
 
 ## Create .env file
 Replace the values in the .env file with your own values
-# Database Configuration
+```bash
 PG_DB=<db_name>
 PG_USER=<db_user>
 PG_PASSWORD=<db_password>
 PG_HOST=<db_host>
 PG_PORT=<db_port>
+```
 
 # Project Settings
 PROJECT_NAME=<project_name>
